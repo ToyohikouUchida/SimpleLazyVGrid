@@ -35,23 +35,47 @@ struct ContentView: View {
     let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
     
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns, spacing: 20) {
-                ForEach(symbols, id: \.self) { symbol in
-                    Image(systemName: symbol)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 50, height: 50)
-                        .padding(20)
-                        .background(.black)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                    
+        
+        NavigationView{
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 20) {
+                    ForEach(symbols, id: \.self) { symbol in
+                        NavigationLink(destination: DetailView(symbol: symbol)){
+                            Image(systemName: symbol)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 50, height: 50)
+                                .padding(20)
+                                .background(.black)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
+                    }
                 }
             }
         }
     }
 }
+
+struct DetailView: View {   //遷移先View
+    let symbol: String
+    
+    var body: some View {
+        VStack {
+            Image(systemName: symbol)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 100, height: 100)
+                .padding()
+            
+            Text("This is the detail view for \(symbol)")
+                .font(.headline)
+                .padding()
+        }
+        .navigationTitle(symbol)
+    }
+}
+
 
 #Preview {
     ContentView()
